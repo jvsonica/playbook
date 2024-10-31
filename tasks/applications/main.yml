@@ -1,0 +1,3 @@
+- import_tasks: google-chrome.yml
+- import_tasks: dbeaver-ce.yml
+- import_tasks: code.yml

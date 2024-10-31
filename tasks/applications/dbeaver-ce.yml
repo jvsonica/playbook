@@ -1,0 +1,11 @@
+- name: Check if DBeaver is installed
+  shell: "which dbeaver-ce"
+  register: has_dbeaver
+  ignore_errors: true
+
+- name: Install DBeaver via release .deb file
+  become: true
+  apt:
+    deb: "https://dbeaver.io/files/24.2.3/dbeaver-ce_24.2.3_amd64.deb"
+  when: ansible_facts['os_family'] == "Debian" and has_dbeaver is failed
+

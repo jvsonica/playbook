@@ -1,0 +1,11 @@
+- name: Check if Chrome is installed
+  shell: "which google-chrome"
+  register: has_chrome
+  ignore_errors: true
+
+- name: Install Chrome via release .deb file
+  become: yes
+  apt:
+    deb: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+  when: ansible_facts['os_family'] == "Debian" and has_chrome is failed
+  ignore_errors: true

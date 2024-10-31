@@ -1,0 +1,11 @@
+- name: Check if wezterm is installed
+  shell: "which wezterm"
+  register: has_wezterm
+  ignore_errors: true
+
+- name: Install wezterm via release .deb file
+  become: yes
+  apt:
+    deb: "https://github.com/wez/wezterm/releases/download/20240203-110809-5046fc22/wezterm-20240203-110809-5046fc22.Ubuntu22.04.deb"
+  ignore_errors: true
+  when: ansible_facts['os_family'] == "Debian" and has_wezterm is failed

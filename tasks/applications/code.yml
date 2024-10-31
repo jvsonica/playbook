@@ -1,0 +1,11 @@
+- name: Check if VS Code is installed
+  shell: "which dbeaver-ce"
+  register: has_code
+  ignore_errors: true
+
+- name: Install VS Code via release .deb file
+  become: yes
+  apt:
+    deb: "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
+  when: ansible_facts['os_family'] == "Debian" and has_code is failed
+  ignore_errors: true

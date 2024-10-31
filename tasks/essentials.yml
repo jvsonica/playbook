@@ -1,0 +1,38 @@
+# Install essential packages for Debian-based systems
+- name: Install essential packages (Debian-based)
+  become: true
+  apt:
+    name:
+      - build-essential
+      - curl
+      - git
+      - python3-apt
+      - python3-pip
+      - zsh
+      - tmux
+      - ripgrep
+      - fzf
+      - dmenu
+    state: present
+  when:
+    - ansible_facts['os_family'] == "Debian"
+
+# Install essential packages for Arch-based systems
+- name: Install essential packages (Arch-based)
+  become: true
+  pacman:
+    name:
+      - base-devel
+      - curl
+      - git
+      - python
+      - python-pip
+      - zsh
+      - tmux
+      - ripgrep
+      - fzf
+      - dmenu
+    state: present
+  when:
+    - ansible_facts['os_family'] == "Archlinux"
+
