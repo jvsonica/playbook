@@ -1,0 +1,58 @@
+# Installs nvim from source.
+# This does not load my config. That is delegated to dotfiles step.
+---
+- name: Check if nvim is installed
+
+  shell: "which nvim"
+  register: has_nvim
+  ignore_errors: true
+
+- name: Install nvim build prerequisites
+  become: true
+  apt:
+    name:
+      - ninja-build
+      - gettext
+      - cmake
+      - unzip
+    state: present
+  when: has_nvim is failed and ansible_facts['os_family'] == "Debian" 
+
+- name: Install nvim build prerequisites
+  pacman:
+    name:
+      - ninja
+      - gettext
+      - cmake
+      - unzip
+    state: present
+  when: has_nvim is failed and ansible_facts['os_family'] == "Archlinux"
+
+- name: Clone nvim repository
+  git:
+    repo: https://github.com/neovim/neovim.git
+    dest: /tmp/neovim
+    version: stable  
+  when: has_nvim is failed
+
+- name: Build nvim
+  become: true
+  command: make CMAKE_BUILD_TYPE=RelWithDebInfo
+  args:
+    chdir: /tmp/neovim
+  when: has_nvim is failed
+
+- name: Install nvim
+  become: true
+  command: make install
+  args:
+    chdir: /tmp/neovim
+  when: has_nvim is failed
+
+- name: Clean up
+  file:
+    path: /tmp/neovim
+    state: absent
+  when: has_nvim is failed
+
+
