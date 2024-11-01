@@ -1,29 +1,41 @@
+- name: Check if smug is installed
+  shell: "which smug"
+  register: has_smug
+  ignore_errors: true
+
 - name: Download smug binary
   ansible.builtin.get_url:
     url: https://github.com/ivaaaan/smug/releases/download/v0.3.5/smug.0.3.5._Linux_x86_64.tar.gz
     dest: /tmp/smug.tar.gz
-    mode: '0644'
+    # mode: '0644'
+  when: has_smug is failed
 
 - name: Create directory for extraction
   ansible.builtin.file:
     path: /tmp/smug
     state: directory
+  when: has_smug is failed
 
 - name: Extract smug binary
   ansible.builtin.unarchive:
     src: /tmp/smug.tar.gz
     dest: /tmp/smug
     remote_src: yes
+  when: has_smug is failed
 
 - name: Move smug binary to /usr/local/bin
+  become: true
   ansible.builtin.command: mv /tmp/smug/smug /usr/local/bin/smug
+  when: has_smug is failed
 
 - name: Remove extracted smug directory
   ansible.builtin.file:
     path: /tmp/smug
     state: absent
+  when: has_smug is failed
 
 - name: Remove downloaded archive
   ansible.builtin.file:
     path: /tmp/smug.tar.gz
     state: absent
+  when: has_smug is failed
