@@ -1,0 +1,32 @@
+- name: Check if rofi is installed
+  shell: "which rofi"
+  register: has_rofi
+  ignore_errors: true
+
+- name: Install rofi (Debian)
+  when:
+    - ansible_facts['os_family'] == "Debian"
+  block:
+    - name: Install rofi from repository
+      become: true
+      apt:
+        name: rofi
+
+    - name: Clone the rofi-themes-collection repository
+      ansible.builtin.git:
+        repo: https://github.com/lr-tech/rofi-themes-collection.git
+        dest: /tmp/rofi-themes-collection
+        clone: yes
+        update: no
+
+    - name: Copy themes to ~/.local/share/rofi/themes
+      ansible.builtin.copy:
+        src: /tmp/rofi-themes-collection/themes/
+        dest: ~/.local/share/rofi/themes/
+        remote_src: yes
+
+    - name: Remove temporary directory
+      ansible.builtin.file:
+        path: /tmp/rofi-themes-collection
+        state: absent
+

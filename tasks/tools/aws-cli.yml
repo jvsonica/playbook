@@ -1,0 +1,32 @@
+- name: Check if aws-cli is installed
+  shell: "which aws"
+  register: has_aws
+  ignore_errors: true
+
+- name: Install AWS CLI v2
+  when: has_aws is failed
+  become: true
+  block:
+    - name: Download AWS CLI ZIP
+      get_url:
+        url: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+        dest: "/tmp/awscliv2.zip"
+
+    - name: Unzip AWS CLI ZIP
+      unarchive:
+        src: "/tmp/awscliv2.zip"
+        dest: "/tmp/"
+        remote_src: yes
+
+    - name: Install AWS CLI
+      command: "/tmp/aws/install"
+
+    - name: Remove installation files
+      file:
+        path: "/tmp/awscliv2.zip"
+        state: absent
+
+    - name: Remove unzipped AWS installation directory
+      file:
+        path: "/tmp/aws"
+        state: absent

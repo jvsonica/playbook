@@ -4,3 +4,6 @@
 - import_tasks: smug.yml
 - import_tasks: delta.yml
 - import_tasks: starship.yml
+- import_tasks: zoxide.yml
+- import_tasks: rofi.yml
+- import_tasks: aws-cli.yml
