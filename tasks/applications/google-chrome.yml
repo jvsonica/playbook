@@ -20,6 +20,7 @@
       apt_repository:
         repo: 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main'
         state: present
+        filename: 'google-chrome'
 
     - name: Update apt cache
       become: true
@@ -32,17 +33,3 @@
         name: google-chrome-stable
         state: present
 
-    - name: Clean up
-      become: true
-      apt:
-        autoclean: yes
-        autoremove: yes
-
-# - name: Install Chrome via release .deb file
-#   become: true
-#   apt:
-#     deb: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
-#   when:
-#     - ansible_facts['os_family'] == "Debian"
-#     - has_chrome is failed
-#   ignore_errors: true
