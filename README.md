@@ -40,6 +40,8 @@ ansible-playbook playbook/workstation.yml --ask-become-pass
 
 - Also include:
   - rofi clipboard manager (greenclip?)
+  - alternative to wezterm
+  - mpv
 
 - Clone my dotfiles
 - Support for Arch-based system;

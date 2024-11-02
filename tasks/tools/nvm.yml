@@ -1,0 +1,15 @@
+# Installs nvm.
+# This script will install nvm by cloning the repository this will still require loading the dotfiles
+# which will load nvm properly via zs.
+---
+
+- name: Check if nvm is installed
+  shell: "which nvm"
+  register: has_nvm
+  ignore_errors: true
+
+
+- name: Install nvm
+  when: has_nvm is failed
+  shell:
+    cmd: "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash"

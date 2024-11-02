@@ -8,6 +8,7 @@
       - git
       - fontconfig
       - unzip
+      - htop
       - python3-apt
       - python3-pip
       - zsh

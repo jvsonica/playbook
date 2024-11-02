@@ -7,3 +7,4 @@
 - import_tasks: zoxide.yml
 - import_tasks: rofi.yml
 - import_tasks: aws-cli.yml
+- import_tasks: nvm.yml
