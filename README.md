@@ -39,13 +39,8 @@ ansible-playbook playbook/workstation.yml --ask-become-pass
 ## Future Work
 
 - Also include:
-  - zoxide
-  - aws cli
-  - rofi
-  - clipboard manager (greenclip?)
-  - obsidian
+  - rofi clipboard manager (greenclip?)
 
 - Clone my dotfiles
-- Ensure chrome task works properly, couldn't test it inside a container;
 - Support for Arch-based system;
 

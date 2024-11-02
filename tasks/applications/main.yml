@@ -3,3 +3,4 @@
 - import_tasks: dbeaver-ce.yml
 - import_tasks: code.yml
 - import_tasks: spotify.yml
+- import_tasks: obsidian.yml

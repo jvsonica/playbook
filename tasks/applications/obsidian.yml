@@ -1,0 +1,11 @@
+- name: Check if DBeaver is installed
+  shell: "which obsidian"
+  register: has_obsidian
+  ignore_errors: true
+
+- name: Install obsidian via release .deb file
+  become: true
+  apt:
+    deb: "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.7.4/obsidian_1.7.4_amd64.deb"
+  when: ansible_facts['os_family'] == "Debian" and has_obsidian is failed
+
