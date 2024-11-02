@@ -6,6 +6,8 @@
       - build-essential
       - curl
       - git
+      - fontconfig
+      - unzip
       - python3-apt
       - python3-pip
       - zsh
@@ -25,6 +27,8 @@
       - base-devel
       - curl
       - git
+      - fontconfig
+      - unzip
       - python
       - python-pip
       - zsh

@@ -1,0 +1,19 @@
+- name: Download Hack Nerd Font to temp directory
+  get_url:
+    url: "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Hack.zip"
+    dest: "/tmp/Hack.zip"
+
+- name: Create ~/.fonts directory if it doesn't exist
+  file:
+    path: "{{ ansible_env.HOME }}/.fonts"
+    state: directory
+
+- name: Unzip Hack Nerd Font to ~/.fonts
+  unarchive:
+    src: "/tmp/Hack.zip"
+    dest: "{{ ansible_env.HOME }}/.fonts"
+    remote_src: yes
+    creates: "{{ ansible_env.HOME }}/.fonts/Hack Regular Nerd Font Complete.ttf"  # prevents re-extracting if file exists
+
+- name: Refresh font cache
+  command: fc-cache -fv

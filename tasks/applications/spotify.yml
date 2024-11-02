@@ -1,0 +1,30 @@
+- name: Check if Spotify is already installed
+  ansible.builtin.command: which spotify
+  register: has_spotify
+  ignore_errors: true
+
+- block:
+    - name: Add Spotify GPG key
+      become: true
+      ansible.builtin.shell: curl -sS https://download.spotify.com/debian/pubkey_6224F9941A8AA6D1.gpg | gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
+
+    - name: Add Spotify repository
+      become: true
+      ansible.builtin.apt_repository:
+        repo: "deb http://repository.spotify.com stable non-free"
+        state: present
+
+    - name: Update package cache
+      become: true
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Install Spotify client
+      become: true
+      ansible.builtin.apt:
+        name: spotify-client
+        state: present
+
+  when:
+    - ansible_os_family == "Debian"
+    - has_spotify is failed

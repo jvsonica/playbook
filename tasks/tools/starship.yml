@@ -1,0 +1,14 @@
+# Installs starship prompt.
+# This does not enable starship prompt, this still has to be enabled in the dotfiles step.
+# Enabling starship should look like this: `eval "$(starship init zsh)"`
+---
+
+- name: Check if starship is installed
+  shell: "which starship"
+  register: has_starship
+  ignore_errors: true
+
+- name: Install starship
+  when: has_starship is failed
+  shell:
+    cmd: "curl -sS https://starship.rs/install.sh | sh -s -- -y"
