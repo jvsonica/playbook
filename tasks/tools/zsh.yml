@@ -1,13 +1,22 @@
 # Installs zsh, oh-my-zsh, and some zsh plugins.
-# While the plugins are installed in the zsh plugin directory, they are not enabled. They may be enabled in the dotfiles step.
-# This playbook installs the following plugins:
+# While the plugins are installed in the zsh plugin directory, they are not enabled. They should be enabled in the dotfiles step.
+# This task installs the following plugins:
 # - zsh-autosuggestions
 # - zsh-syntax-highlighting
 # - zsh-fzf-history-search
+#
+# Enabling them will imply updating `.zshrc` file to include something like:
+# plugins=(git zsh-autosuggestions zsh-syntax-highlighting zsh-fzf-history-search)
 ---
+
+- name: Check if zsh is installed
+  shell: "which zsh"
+  register: has_zsh
+  ignore_errors: true
 
 - name: Install zsh
   become: yes
+  when: has_zsh is failed
   apt:
     name: zsh
     state: latest
@@ -18,29 +27,29 @@
   register: oh_my_zsh_installed
 
 - name: Install oh-my-zsh
-  shell:
-    cmd: "curl -sL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | bash -"
   when: not oh_my_zsh_installed.stat.exists
+  block:
+    - name: Run oh-my-zsh installer
+      shell:
+        cmd: "curl -sL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | bash -"
 
-- name: Install zsh-autosuggestions plugin
-  git:
-    repo: https://github.com/zsh-users/zsh-autosuggestions
-    dest: "/home/{{ ansible_user_id }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
-  when: oh_my_zsh_installed.stat.exists
+    - name: Install zsh-autosuggestions plugin
+      git:
+        repo: https://github.com/zsh-users/zsh-autosuggestions
+        dest: "/home/{{ ansible_user_id }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
 
-- name: Install zsh-syntax-highlighting plugin
-  git:
-    repo: https://github.com/zsh-users/zsh-syntax-highlighting
-    dest: "/home/{{ ansible_user_id }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
-  when: oh_my_zsh_installed.stat.exists
+    - name: Install zsh-syntax-highlighting plugin
+      git:
+        repo: https://github.com/zsh-users/zsh-syntax-highlighting
+        dest: "/home/{{ ansible_user_id }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
 
-- name: Install zsh-fzf-history-search plugin
-  git:
-    repo: https://github.com/joshskidmore/zsh-fzf-history-search
-    dest: "/home/{{ ansible_user_id }}/.oh-my-zsh/custom/plugins/zsh-fzf-history-search"
-  when: oh_my_zsh_installed.stat.exists
-
+    - name: Install zsh-fzf-history-search plugin
+      git:
+        dest: "/home/{{ ansible_user_id }}/.oh-my-zsh/custom/plugins/zsh-fzf-history-search"
+        repo: https://github.com/joshskidmore/zsh-fzf-history-search
+    
 - name: Change shell to zsh
+  become: true
   user:
     user: "{{ ansible_user_id }}"
     shell: /bin/zsh
