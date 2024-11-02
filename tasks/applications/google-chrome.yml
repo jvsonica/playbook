@@ -33,6 +33,7 @@
         state: present
 
     - name: Clean up
+      become: true
       apt:
         autoclean: yes
         autoremove: yes

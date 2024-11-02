@@ -1,4 +1,5 @@
-- import_tasks: spotify.yml
+- import_tasks: firefox.yml
+- import_tasks: google-chrome.yml
 - import_tasks: dbeaver-ce.yml
 - import_tasks: code.yml
-- import_tasks: google-chrome.yml
+- import_tasks: spotify.yml

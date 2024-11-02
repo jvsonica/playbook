@@ -5,6 +5,8 @@
   apt:
     update_cache: true
     cache_valid_time: 3600
+    autoclean: true
+    autoremove: true
   when: ansible_facts['os_family'] == "Debian"
 
 - name: Update Pacman package cache 
