@@ -1,0 +1,75 @@
+- name: Check if Docker is already installed
+  ansible.builtin.command: which docker
+  register: has_docker
+  ignore_errors: true
+
+- name: Install Docker engine
+  block:
+    - name: Determine Debian codename
+      when: ansible_distribution == 'Debian'
+      ansible.builtin.set_fact:
+        debian_codename: "{{ ansible_distribution_release }}"
+
+    - name: Determine Debian codename based on Ubuntu version
+      when: ansible_distribution == 'Ubuntu'
+      ansible.builtin.set_fact:
+        debian_codename: "{{ debian_codename_map.get(ansible_distribution_release, '') }}"
+
+    - name: Update package cache before Docker installation
+      become: true
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Install Docker prerequisites
+      become: true
+      ansible.builtin.apt:
+        name:
+          - ca-certificates
+          - curl
+        state: present
+
+    - name: Add Docker’s official GPG key
+      become: true
+      ansible.builtin.shell:
+        curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+      args:
+        creates: /etc/apt/keyrings/docker.asc
+
+    - name: Add Docker repository with Debian equivalent codename
+      become: true
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian {{ debian_codename }} stable"
+        state: present
+
+    - name: Update package cache after adding Docker repository
+      become: true
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Install Docker packages
+      become: true
+      ansible.builtin.apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+
+    - name: Create Docker group if it does not exist
+      become: true
+      ansible.builtin.group:
+        name: docker
+        state: present
+
+    - name: Add current user to Docker group
+      become: true
+      ansible.builtin.user:
+        name: "{{ ansible_user_id }}"
+        groups: docker
+        append: true
+
+  when:
+    - ansible_os_family == "Debian"
+    - has_docker is failed

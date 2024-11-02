@@ -1,1 +1,8 @@
-# add vars here
+# Debian release codename based on Ubuntu codename.
+# This is useful when a software organizes their releases by this codename (like Docker does)
+# and we need to infer it to download the appropriate version.
+debian_codename_map:
+  jammy: bookworm   # Ubuntu 22.04 ≈ Debian 12
+  focal: bullseye   # Ubuntu 20.04 ≈ Debian 11
+  bionic: buster    # Ubuntu 18.04 ≈ Debian 10
+  xenial: stretch   # Ubuntu 16.04 ≈ Debian 9
