@@ -3,9 +3,45 @@
   register: has_chrome
   ignore_errors: true
 
-- name: Install Chrome via release .deb file
-  become: yes
-  apt:
-    deb: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
-  when: ansible_facts['os_family'] == "Debian" and has_chrome is failed
+- name: Install Chrome
   ignore_errors: true
+  when:
+    - ansible_facts['os_family'] == "Debian"
+    - has_chrome is failed
+  block:
+    - name: Add Google Chrome GPG key
+      become: true
+      apt_key:
+        url: https://dl.google.com/linux/linux_signing_key.pub
+        state: present
+
+    - name: Add Google Chrome repository
+      become: true
+      apt_repository:
+        repo: 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main'
+        state: present
+
+    - name: Update apt cache
+      become: true
+      apt:
+        update_cache: yes
+
+    - name: Install Google Chrome
+      become: true
+      apt:
+        name: google-chrome-stable
+        state: present
+
+    - name: Clean up
+      apt:
+        autoclean: yes
+        autoremove: yes
+
+# - name: Install Chrome via release .deb file
+#   become: true
+#   apt:
+#     deb: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+#   when:
+#     - ansible_facts['os_family'] == "Debian"
+#     - has_chrome is failed
+#   ignore_errors: true

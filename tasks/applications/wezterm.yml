@@ -4,7 +4,7 @@
   ignore_errors: true
 
 - name: Install wezterm via release .deb file
-  become: yes
+  become: true
   apt:
     deb: "https://github.com/wez/wezterm/releases/download/20240203-110809-5046fc22/wezterm-20240203-110809-5046fc22.Ubuntu22.04.deb"
   ignore_errors: true
