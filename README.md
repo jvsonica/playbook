@@ -2,8 +2,16 @@
 
 Ansible playbook to set up my workstation on Debian-based OS.
 
-Execute with `ansible-playbook workstation.yml --ask-become-pass`.
+Ensure git and ansible are installed:
+```bash
+sudo apt update
+sudo apt install -y ansible git
+```
 
+Execute with:
+```
+ansible-playbook workstation.yml --ask-become-pass`.
+```
 
 ## Structure
 The playblook tasks are organized as follows:
@@ -23,7 +31,7 @@ To test the playbook in a Docker container based on an Ubuntu image, follow thes
 
 1. Build the Docker image using the provided Dockerfile in the repository:
 ```
-docker build -t ansible-test .
+docker build -f Dockerfile.debian -t ansible-test .
 ```
 
 2. Run the Docker container interactively, mounting the current directory to `/home/ansible_user/playbook` in the container:
