@@ -1,0 +1,15 @@
+# Dockerfile
+FROM ubuntu:latest
+
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y ansible python3 sudo && \
+    apt-get clean
+
+# Create ansible_user and set password
+RUN useradd -m -s /bin/bash ansible_user && \
+    echo "ansible_user:abc" | chpasswd && \
+    echo "ansible_user ALL=(ALL) ALL" >> /etc/sudoers
+
+USER ansible_user
+WORKDIR /home/ansible_user
