@@ -9,6 +9,5 @@
     - import_tasks: tasks/essentials.yml
     - import_tasks: tasks/applications/main.yml
     - import_tasks: tasks/tools/main.yml
-    # - import_tasks: tasks/install_from_source.yml
-    # - import_tasks: tasks/dotfiles.yml
+    - import_tasks: tasks/dotfiles.yml
 

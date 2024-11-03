@@ -16,6 +16,7 @@
       - ripgrep
       - fzf
       - dmenu
+      - stow
     state: present
   when:
     - ansible_facts['os_family'] == "Debian"
@@ -37,6 +38,7 @@
       - ripgrep
       - fzf
       - dmenu
+      - stow
     state: present
   when:
     - ansible_facts['os_family'] == "Archlinux"

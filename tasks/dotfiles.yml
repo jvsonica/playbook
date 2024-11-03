@@ -1,0 +1,10 @@
+- name: Clone dotfiles repository
+  ansible.builtin.git:
+    repo: https://github.com/jvsonica/dotfiles.git
+    dest: ~/.dotfiles
+    update: yes
+
+- name: Run stow
+  ansible.builtin.shell:
+    cmd: "stow --adopt */ && git restore ."
+    chdir: "~/.dotfiles"
