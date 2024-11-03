@@ -1,14 +1,11 @@
-# Installs zoxide.
-# This script will install zoxide in `~/.local/bin`. By default this directory should not be on PATH until you load dotfiles.
 ---
 
 - name: Check if zoxide is installed
-  stat:
-    path: ~/.local/bin/zoxide
+  shell: "which zoxide"
   register: has_zoxide
   ignore_errors: true
 
 - name: Install zoxide
   when: has_zoxide is failed
   shell:
-    cmd: "curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh"
+    cmd: "curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh -s -- --bin-dir /usr/local/bin"
