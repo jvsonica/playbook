@@ -6,7 +6,5 @@
     - vars/common.yml
   tasks:
     - import_tasks: tasks/update.yml
-    - import_tasks: tasks/essentials/main.yml
-    - import_tasks: tasks/applications/main.yml
-    - import_tasks: tasks/tools/main.yml
-    - import_tasks: tasks/dotfiles.yml
+    - import_tasks: tasks/essentials/server.yml
+    - import_tasks: tasks/tools/server.yml

@@ -4,6 +4,7 @@
   apt:
     name:
       - build-essential
+      - i3
       - curl
       - git
       - fontconfig
@@ -11,12 +12,15 @@
       - htop
       - python3-apt
       - python3-pip
+      - python3-virtualenv
       - zsh
       - tmux
       - ripgrep
       - fzf
       - dmenu
       - stow
+      - jq
+      - sshfs
     state: present
   when:
     - ansible_facts['os_family'] == "Debian"
@@ -27,6 +31,7 @@
   pacman:
     name:
       - base-devel
+      - i3
       - curl
       - git
       - fontconfig
@@ -39,7 +44,8 @@
       - fzf
       - dmenu
       - stow
+      - jq
+      - sshfs
     state: present
   when:
     - ansible_facts['os_family'] == "Archlinux"
-
