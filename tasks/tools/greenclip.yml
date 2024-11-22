@@ -1,0 +1,13 @@
+#
+#
+---
+- name: Check if greenclip is installed
+  shell: "which greenclip"
+  register: has_greenclip
+  ignore_errors: true
+
+- name: Install greenclip
+  get_url:
+    url: "https://github.com/erebe/greenclip/releases/download/v4.2/greenclip"
+    dest: "/usr/local/bin/greenclip"
+  when: has_greenclip is failed

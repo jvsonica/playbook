@@ -9,3 +9,4 @@
 - import_tasks: aws-cli.yml
 - import_tasks: nvm.yml
 - import_tasks: docker.yml
+- import_tasks: greenclip.yml
